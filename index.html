@@ -1,0 +1,162 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengingat Minum Obat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-pills"></i> Pengingat Obat</h1>
+            <p>Jangan lupa minum obat tepat waktu</p>
+        </header>
+
+        <main>
+            <!-- Tombol Tambah Obat -->
+            <button class="add-btn" onclick="openModal('addMedicineModal')">
+                <i class="fas fa-plus"></i> Tambah Obat Baru
+            </button>
+
+            <!-- Daftar Obat Hari Ini -->
+            <section class="today-schedule">
+                <h2>Jadwal Hari Ini</h2>
+                <div id="todayList" class="medicine-list"></div>
+            </section>
+
+            <!-- Daftar Semua Obat -->
+            <section class="all-medicines">
+                <h2>Daftar Obat</h2>
+                <div id="medicineList" class="medicine-list"></div>
+            </section>
+
+            <!-- Tambahkan setelah section all-medicines -->
+            <section class="health-tips">
+                <h2><i class="fas fa-heart"></i> Saran Kesehatan Hari Ini</h2>
+                <div id="healthTipCard" class="tip-card"></div>
+            </section>
+
+            <section class="medical-calendar">
+                <h2><i class="fas fa-calendar-alt"></i> Kalender Medis</h2>
+                <div class="calendar-header">
+                    <button onclick="previousMonth()"><i class="fas fa-chevron-left"></i></button>
+                    <h3 id="currentMonth">Agustus 2024</h3>
+                    <button onclick="nextMonth()"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="weekdays">
+                        <div>Min</div><div>Sen</div><div>Sel</div>
+                        <div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+                    </div>
+                    <div id="calendarDays" class="days"></div>
+                </div>
+                <div id="medicineSchedule" class="schedule-list"></div>
+            </section>
+            <section class="consultation-schedule">
+                <h2><i class="fas fa-user-md"></i> Jadwal Konsultasi</h2>
+                <div id="consultationList" class="consultation-list"></div>
+                <button class="add-btn" onclick="openAddConsultationModal()">
+                    <i class="fas fa-calendar-plus"></i> Tambah Jadwal
+                </button>
+            </section>        
+            <section id="health-education" class="health-education">
+                <h2><i class="fas fa-book-open"></i> Edukasi Kesehatan</h2>
+                <div id="educationContent" class="education-content">
+                    <!-- Konten edukasi akan dimuat di sini -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Modal Tambah Obat -->
+        <div id="addMedicineModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('addMedicineModal')">&times;</span>
+                <h2>Tambah Obat Baru</h2>
+                <form id="addMedicineForm">
+                    <div class="form-group">
+                        <label for="medicineName">Nama Obat:</label>
+                        <input type="text" id="medicineName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dosage">Dosis:</label>
+                        <input type="text" id="dosage" placeholder="Misal: 1 tablet" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Waktu Minum:</label>
+                        <input type="time" id="time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Durasi (hari):</label>
+                        <input type="number" id="duration" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Catatan:</label>
+                        <textarea id="notes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Simpan</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Pengingat -->
+        <div id="reminderModal" class="modal">
+            <div class="modal-content reminder">
+                <div class="reminder-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h2>Waktunya Minum Obat!</h2>
+                <p id="reminderMessage"></p>
+                <div class="reminder-actions">
+                    <button onclick="markAsTaken()" class="taken-btn">
+                        <i class="fas fa-check"></i> Sudah Diminum
+                    </button>
+                    <button onclick="snoozeReminder()" class="snooze-btn">
+                        <i class="fas fa-clock"></i> Ingatkan 15 Menit Lagi
+                    </button>
+                </div>
+            </div>  
+        </div>
+        <!-- Modal Tambah Jadwal Konsultasi -->
+        <div id="addConsultationModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAddConsultationModal()">&times;</span>
+                    <h2>Tambah Jadwal</h2><br>
+                    <form id="addConsultationForm">
+                    <div class="form-group">
+                        <label for="consultationDate">Tanggal:</label>
+                        <input type="date" id="consultationDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="consultationTime">Waktu:</label>
+                        <input type="time" id="consultationTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="consultationNotes">Catatan:</label>
+                        <textarea id="consultationNotes" rows="3" placeholder="Catatan tambahan (opsional)"></textarea>
+                    </div>
+                    <button type="button" class="submit-btn" onclick="addConsultation()" style="width: 170px; display: flex; justify-content: center; align-items: center;">Simpan</button>
+                </form>
+            </div>
+        </div>
+    
+    <audio id="alarm-sound" src="night-detective-226857.mp3" preload="auto"></audio>
+    <script src="app.js"></script>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+
+    <script>
+        // Cek apakah pengguna sudah login
+        if (!localStorage.getItem('loggedIn')) {
+            window.location.href = 'login.html'; // Jika belum login, arahkan ke halaman login
+        }
+
+        // Fungsi logout
+        function logout() {
+            localStorage.removeItem('loggedIn');
+            window.location.href = 'login.html'; // Arahkan ke halaman login setelah logout
+        }
+    </script>
+</body>
+</html>

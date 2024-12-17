@@ -1,0 +1,44 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Form Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="submit-btn">Login</button>
+        </form>
+        <p>Belum punya akun? <a href="register.html">Daftar disini</a></p>
+    </div>
+    <script>
+        // Fungsi untuk menangani login
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var inputUsername = document.getElementById("username").value;
+            var inputPassword = document.getElementById("password").value;
+            var storedUsername = localStorage.getItem('username');
+            var storedPassword = localStorage.getItem('password');
+            if (inputUsername === storedUsername && inputPassword === storedPassword) {
+                localStorage.setItem('loggedIn', true);
+                alert("Login berhasil!");
+                window.location.href = "index.html";
+            } else {
+                alert("Username atau password salah.");
+            }
+        });
+    </script>
+</body>
+</html>
